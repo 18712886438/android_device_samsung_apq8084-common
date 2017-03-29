@@ -50,9 +50,9 @@ BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom user_debug=31 msm
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk
-TARGET_KERNEL_CONFIG := apq8084_sec_defconfig
+TARGET_KERNEL_VARIANT_CONFIG  := dummy_defconfig
 TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/apq8084
+TARGET_KERNEL_SOURCE := kernel/samsung/lentislte
 
 # Camera
 TARGET_USE_COMPAT_GRALLOC_ALIGN := true
