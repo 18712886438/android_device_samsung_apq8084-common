@@ -458,6 +458,20 @@ on early-boot
     write /sys/kernel/boot_adsp/boot 1
 
 on boot
+    # Enable msm hotplug for boot
+    write /sys/module/msm_hotplug/msm_enabled 1
+    write /sys/module/msm_hotplug/cpu_boosted 2
+    write /sys/module/msm_hotplug/max_cpu_online 3
+    write /sys/module/msm_hotplug/min_cpu_online 1
+   
+ # CPU Sets
+    # reserve CPU 3 for the top app
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-1
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuctl/cpu.shares 1024
 # reset_reason
     chown system system /proc/reset_reason
     chmod 0600 /proc/reset_reason
@@ -1222,6 +1236,7 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     class main
     user camera
     group camera system inet input graphics radio sdcard_rw sdcard_r media_rw shell log
+    writepid /dev/cpuset/system-background/tasks
 
 service gsiff_daemon /system/bin/gsiff_daemon
     class late_start
@@ -1233,11 +1248,6 @@ service qseecomd /system/bin/qseecomd
     user root
     group root
 
-service mpdecision /system/bin/mpdecision --avg_comp
-    class main
-    user root
-    group root readproc
-    disabled
 
 service thermal-engine /system/vendor/bin/thermal-engine
     class main
@@ -1505,7 +1515,11 @@ on property:sys.boot_completed=1
 
     # Post boot services
     rm /data/system/perfd/default_values
-    start mpdecision
+    # Enable msm hotplug for boot
+    write /sys/module/msm_hotplug/msm_enabled 1
+    write /sys/module/msm_hotplug/cpu_boosted 2
+    write /sys/module/msm_hotplug/max_cpu_online 3
+    write /sys/module/msm_hotplug/min_cpu_online 1
 
     # Symlink directories to access telephony.db and preferred-apn.xml required by cbd
     symlink /data/user_de/0/com.android.providers.telephony/databases /data/data/com.android.providers.telephony/databases
