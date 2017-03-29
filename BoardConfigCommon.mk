@@ -23,6 +23,8 @@ LOCAL_PATH := device/samsung/apq8084-common
 # Architecture
 TARGET_CPU_VARIANT := krait
 
+ENABLE_CPUSETS := true
+
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 AUDIO_FEATURE_ENABLED_FLUENCE := true
